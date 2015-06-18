@@ -1,0 +1,167 @@
+{% extends 'CcmCfdiBundle::layout.html.twig' %}
+
+{% block body -%}
+
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success" role="alert">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <h1>Factura</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Lugarexpedicion</th>
+                <td>{{ entity.lugarExpedicion }}</td>
+            </tr>
+            <tr>
+                <th>Folio</th>
+                <td>{{ entity.folio }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Formapago</th>
+                <td>{{ entity.formaPago }}</td>
+            </tr>
+            <tr>
+                <th>Tipocomprobante</th>
+                <td>{{ entity.tipoComprobante }}</td>
+            </tr>
+            <tr>
+                <th>Numerocertificado</th>
+                <td>{{ entity.numeroCertificado }}</td>
+            </tr>
+            <tr>
+                <th>Subtotal</th>
+                <td>{{ entity.subTotal }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ entity.total }}</td>
+            </tr>
+            <tr>
+                <th>Emisorrfc</th>
+                <td>{{ entity.emisorRfc }}</td>
+            </tr>
+            <tr>
+                <th>Emisornombre</th>
+                <td>{{ entity.emisorNombre }}</td>
+            </tr>
+            <tr>
+                <th>Emisorcalle</th>
+                <td>{{ entity.emisorCalle }}</td>
+            </tr>
+            <tr>
+                <th>Emisornumexterior</th>
+                <td>{{ entity.emisorNumExterior }}</td>
+            </tr>
+            <tr>
+                <th>Emisorcolonia</th>
+                <td>{{ entity.emisorColonia }}</td>
+            </tr>
+            <tr>
+                <th>Emisormunicipio</th>
+                <td>{{ entity.emisorMunicipio }}</td>
+            </tr>
+            <tr>
+                <th>Emisorestado</th>
+                <td>{{ entity.emisorEstado }}</td>
+            </tr>
+            <tr>
+                <th>Emisorpais</th>
+                <td>{{ entity.emisorPais }}</td>
+            </tr>
+            <tr>
+                <th>Emisorcp</th>
+                <td>{{ entity.emisorCp }}</td>
+            </tr>
+            <tr>
+                <th>Receptorrfc</th>
+                <td>{{ entity.receptorRfc }}</td>
+            </tr>
+            <tr>
+                <th>Receptornombre</th>
+                <td>{{ entity.receptorNombre }}</td>
+            </tr>
+            <tr>
+                <th>Receptorcalle</th>
+                <td>{{ entity.receptorCalle }}</td>
+            </tr>
+            <tr>
+                <th>Receptornumexterior</th>
+                <td>{{ entity.receptorNumExterior }}</td>
+            </tr>
+            <tr>
+                <th>Receptorcolonia</th>
+                <td>{{ entity.receptorColonia }}</td>
+            </tr>
+            <tr>
+                <th>Receptormunicipio</th>
+                <td>{{ entity.receptorMunicipio }}</td>
+            </tr>
+            <tr>
+                <th>Receptorestado</th>
+                <td>{{ entity.receptorEstado }}</td>
+            </tr>
+            <tr>
+                <th>Receptorpais</th>
+                <td>{{ entity.receptorPais }}</td>
+            </tr>
+            <tr>
+                <th>Receptorcp</th>
+                <td>{{ entity.receptorCp }}</td>
+            </tr>
+            <tr>
+                <th>Totalimpuestotrasladado</th>
+                <td>{{ entity.totalImpuestoTrasladado }}</td>
+            </tr>
+            <tr>
+                <th>Impuesto</th>
+                <td>{{ entity.impuesto }}</td>
+            </tr>
+            <tr>
+                <th>Tasa</th>
+                <td>{{ entity.tasa }}</td>
+            </tr>
+            <tr>
+                <th>Importe</th>
+                <td>{{ entity.importe }}</td>
+            </tr>
+            <tr>
+                <th>Uuid</th>
+                <td>{{ entity.uuid }}</td>
+            </tr>
+            <tr>
+                <th>Fechatimbrado</th>
+                <td>{{ entity.fechaTimbrado|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Fechacreacion</th>
+                <td>{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

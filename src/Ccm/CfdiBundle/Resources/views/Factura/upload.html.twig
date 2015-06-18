@@ -1,0 +1,22 @@
+{% extends 'CcmCfdiBundle::layout.html.twig' %}
+
+{% block body -%}
+
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success" role="alert">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    {#  xml #}
+
+    <h1>Carga XML</h1>
+
+    {{ form(form) }}
+
+{% endblock %}
