@@ -4,67 +4,78 @@
     {{ parent() }}
 
     <link href="{{ asset('bundles/ccmcfdi/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <link href="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
 
 {% endblock %}
 
 {% block body -%}
     <h1>Lista de Facturas</h1>
 
-    <table  id="myTable" class="display" >
+    <table  id="myTable" class="display table" >
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Lugarexpedicion</th>
-                <th>Folio</th>
                 <th>Fecha</th>
-                <th>Formapago</th>
-                <th>Tipocomprobante</th>
-                <th>Numerocertificado</th>
-                <th>Subtotal</th>
+                <th>Emisor</th>
+                <th>RFC</th>
+                <th>Importe</th>
+                <th>Impuesto</th>
                 <th>Total</th>
-                <th>Emisorrfc</th>
-                <th>Emisornombre</th>
-                <th>Emisorcalle</th>
-                <th>Emisornumexterior</th>
-                <th>Emisorcolonia</th>
-                <th>Emisormunicipio</th>
-                <th>Emisorestado</th>
-                <th>Emisorpais</th>
-                <th>Emisorcp</th>
-                <th>Receptorrfc</th>
-                <th>Receptornombre</th>
-                <th>Receptorcalle</th>
-                <th>Receptornumexterior</th>
-                <th>Receptorcolonia</th>
-                <th>Receptormunicipio</th>
-                <th>Receptorestado</th>
-                <th>Receptorpais</th>
-                <th>Receptorcp</th>
-                <th>Totalimpuestotrasladado</th>
                 <th>Impuesto</th>
                 <th>Tasa</th>
                 <th>Importe</th>
-                <th>Uuid</th>
-                <th>Fechatimbrado</th>
-                <th>Fechacreacion</th>
-                <th>Actions</th>
+                <th>Archivo</th>
+
+                {#              <th>Id</th>
+                                <th>Lugarexpedicion</th>
+                                <th>Folio</th>
+                                <th>Formapago</th>
+                                <th>Tipocomprobante</th>
+                                <th>Numerocertificado</th>
+
+
+                                <th>Emisorcalle</th>
+                                <th>Emisornumexterior</th>
+                                <th>Emisorcolonia</th>
+                                <th>Emisormunicipio</th>
+                                <th>Emisorestado</th>
+                                <th>Emisorpais</th>
+                                <th>Emisorcp</th>
+                                <th>Receptorrfc</th>
+                                <th>Receptornombre</th>
+                                <th>Receptorcalle</th>
+                                <th>Receptornumexterior</th>
+                                <th>Receptorcolonia</th>
+                                <th>Receptormunicipio</th>
+                                <th>Receptorestado</th>
+                                <th>Receptorpais</th>
+                                <th>Receptorcp</th>
+                #}
+
             </tr>
         </thead>
         <tbody>
 
         {% for entity in entities %}
             <tr>
+                <td>{% if entity.fecha %}{{ entity.fecha|date('d-m-Y') }}{% endif %}</td>
+                <td><a href="{{ path('_show', { 'id': entity.id }) }}">{{ entity.emisorNombre }}</a></td>
+                <td>{{ entity.emisorRfc }}</td>
+                <td>${{ entity.subTotal|number_format(2, '.', ',') }}</td>
+                <td>${{ entity.totalImpuestoTrasladado|number_format(2, '.', ',') }}</td>
+                <td><strong>${{ entity.total|number_format }}<strong></td>
+                <td>{{ entity.impuesto }}</td>
+                <td>{{ entity.tasa }}%</td>
+                <td>${{ entity.importe|number_format(2, '.', ',')}}</td>
+                <td>{{ entity.nombreArchivo }}</td>
+
+{#
                 <td><a href="{{ path('_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.lugarExpedicion }}</td>
                 <td>{{ entity.folio }}</td>
-                <td>{% if entity.fecha %}{{ entity.fecha|date('Y-m-d') }}{% endif %}</td>
                 <td>{{ entity.formaPago }}</td>
                 <td>{{ entity.tipoComprobante }}</td>
                 <td>{{ entity.numeroCertificado }}</td>
-                <td>{{ entity.subTotal }}</td>
-                <td>{{ entity.total }}</td>
-                <td>{{ entity.emisorRfc }}</td>
-                <td>{{ entity.emisorNombre }}</td>
                 <td>{{ entity.emisorCalle }}</td>
                 <td>{{ entity.emisorNumExterior }}</td>
                 <td>{{ entity.emisorColonia }}</td>
@@ -81,45 +92,30 @@
                 <td>{{ entity.receptorEstado }}</td>
                 <td>{{ entity.receptorPais }}</td>
                 <td>{{ entity.receptorCp }}</td>
-                <td>{{ entity.totalImpuestoTrasladado }}</td>
-                <td>{{ entity.impuesto }}</td>
-                <td>{{ entity.tasa }}</td>
-                <td>{{ entity.importe }}</td>
+
                 <td>{{ entity.uuid }}</td>
                 <td>{% if entity.fechaTimbrado %}{{ entity.fechaTimbrado|date('Y-m-d') }}{% endif %}</td>
                 <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
+#}
+
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-        <ul>
-        <li>
-            <a href="{{ path('_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
     {% endblock %}
 
     {% block javascript -%}
-        <script>
-            $(document).ready(function(){
-                $('#myTable').DataTable();
-            });
-        </script>
 
         {{ parent() }}
 
         <script src="{{ asset('bundles/ccmcfdi/js/jquery.dataTables.min.js') }}"></script>
+        <script src="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+        <script>
+            $(document).ready(function(){
+                $('#myTable').DataTable({"language": {url: '//cdn.datatables.net/plug-ins/1.10.7/i18n/Spanish.json'}});
+            });
+        </script>
+
     {% endblock %}

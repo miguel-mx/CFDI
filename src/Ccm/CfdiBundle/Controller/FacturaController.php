@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ccm\CfdiBundle\Entity\Factura;
 use Ccm\CfdiBundle\Form\FacturaType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\FormView;
 
 /**
  * Factura controller.
@@ -30,19 +31,20 @@ class FacturaController extends Controller
     {
         //$defaultData = array('message' => 'Carga archivo XML');
 
-        $factura = new Factura();
-
         $form = $this->createFormBuilder()
+            // ->add('archivo', 'file', array('attr' => array('multiple' => 'multiple')) )
             ->add('archivo', 'file')
-            ->add('send', 'submit')
+            ->add('send', 'submit', array('attr' => array('label'  => 'Cargar Archivo', 'class' => 'btn btn-primary')) )
             ->getForm();
+
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
 
-            // you just read the file contents as a string
             $archivo = $form['archivo']->getData();
+
+            $factura = new Factura();
 
             $extension = $archivo->guessExtension();
 
@@ -59,23 +61,23 @@ class FacturaController extends Controller
                 $em->persist($factura);
                 $em->flush();
 
+                $this->addFlash(
+                    'notice',
+                    $archivo->getClientOriginalName() . ' XML subido correctamente!'
+                );
+
             }
             else {
 
                  $this->addFlash(
                     'error',
-                    'Favor de introducir un archivo XML!'
+                    $archivo->getClientOriginalName() . ' No es archivo XML!'
                 );
 
                 return array(
-                  'form'   => $form->createView(),
+                    'form'   => $form->createView(),
                 );
             }
-
-            $this->addFlash(
-                'notice',
-                'XML subido correctamente!'
-            );
 
             // Muestra la nueva factura
             return $this->redirect($this->generateUrl('_show', array('id' => $factura->getId())));

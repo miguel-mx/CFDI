@@ -7,6 +7,7 @@
             {{ flashMessage }}
         </div>
     {% endfor %}
+
     {% for flashMessage in app.session.flashbag.get('error') %}
         <div class="alert alert-danger" role="alert">
             {{ flashMessage }}
@@ -15,8 +16,11 @@
 
     {#  xml #}
 
-    <h1>Carga XML</h1>
+    <div class="page-header">
+        <h4>Carga de archivo XML</h4>
+    </div>
 
+    {# Boorar etiqueta #}
     {{ form(form) }}
 
 {% endblock %}
