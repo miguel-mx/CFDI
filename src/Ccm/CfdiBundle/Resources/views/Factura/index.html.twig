@@ -6,11 +6,13 @@
     <link href="{{ asset('bundles/ccmcfdi/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
 
-
 {% endblock %}
 
 {% block body -%}
-    <h1>Lista de Facturas</h1>
+
+    <div class="page-header">
+        <h4>Facturas CCM</h4>
+    </div>
 
     <table  id="myTable" class="display table" >
         <thead>

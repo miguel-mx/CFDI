@@ -32,60 +32,72 @@ class FacturaController extends Controller
         //$defaultData = array('message' => 'Carga archivo XML');
 
         $form = $this->createFormBuilder()
-            // ->add('archivo', 'file', array('attr' => array('multiple' => 'multiple')) )
-            ->add('archivo', 'file')
+            ->add('archivos', 'file', array('multiple' => TRUE))
+            // ->add('archivo', 'file')
             ->add('send', 'submit', array('attr' => array('label'  => 'Cargar Archivo', 'class' => 'btn btn-primary')) )
             ->getForm();
+
+        $formView = $form->createView();
+        $formView->children['archivos']->vars = array_replace($formView->children['archivos']->vars, array('full_name', 'form[archivos][]'));
 
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
 
-            $archivo = $form['archivo']->getData();
+            //individual
+            //$archivo = $form['archivo']->getData();
 
-            $factura = new Factura();
+            $archivos = $form['archivos']->getData(); // multiple
 
-            $extension = $archivo->guessExtension();
+            foreach($archivos as $archivo) {
 
-            if ($extension == "xml") { // check if the file extension is as required; you can also check the mime type itself: $file->getMimeType()
+                $factura = new Factura();
 
-                $content = file_get_contents($archivo->getPathname());
+                $extension = $archivo->guessExtension();
 
-                $factura->loadXml($content);
-                $factura->setNombreArchivo($archivo->getClientOriginalName());
+                if ($extension == "xml") { // check if the file extension is as required; you can also check the mime type itself: $file->getMimeType()
 
-                //TODO: Valida que no exista la factura
+                    $content = file_get_contents($archivo->getPathname());
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($factura);
-                $em->flush();
+                    $factura->loadXml($content);
+                    $factura->setNombreArchivo($archivo->getClientOriginalName());
 
-                $this->addFlash(
-                    'notice',
-                    $archivo->getClientOriginalName() . ' XML subido correctamente!'
-                );
+                    //TODO: Valida que no exista la factura
 
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($factura);
+                    $em->flush();
+
+                    $this->addFlash(
+                        'notice',
+                        $archivo->getClientOriginalName() . ' XML subido correctamente!'
+                    );
+
+                } else {
+
+                    $this->addFlash(
+                        'error',
+                        $archivo->getClientOriginalName() . ' No es archivo XML!'
+                    );
+
+                    /* Archivo individual
+
+                    return array(
+                        'form' => $form->createView(),
+                    ); */
+                }
             }
-            else {
 
-                 $this->addFlash(
-                    'error',
-                    $archivo->getClientOriginalName() . ' No es archivo XML!'
-                );
+            // Muestra la nueva factura Individual
+            // return $this->redirect($this->generateUrl('_show', array('id' => $factura->getId())));
 
-                return array(
-                    'form'   => $form->createView(),
-                );
-            }
-
-            // Muestra la nueva factura
-            return $this->redirect($this->generateUrl('_show', array('id' => $factura->getId())));
+            // Vista de archivos cargados
 
         }
 
         return array(
-            'form'   => $form->createView(),
+            'form'   => $formView,
         );
 
     }
