@@ -5,6 +5,14 @@
 
     <link href="{{ asset('bundles/ccmcfdi/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="{{ asset('bundles/ccmcfdi/css/dataTables.tableTools.min.css') }}" rel="stylesheet">
+    <style type="text/css" class="init">
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            margin-left: 0;
+            padding: 0;
+        }
+	</style>
+
 
 {% endblock %}
 
@@ -113,10 +121,20 @@
 
         <script src="{{ asset('bundles/ccmcfdi/js/jquery.dataTables.min.js') }}"></script>
         <script src="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+        <script src="{{ asset('bundles/ccmcfdi/js/dataTables.tableTools.min.js') }}"></script>
+
 
         <script>
+            // $.fn.dataTable.TableTools.defaults.aButtons = [ "copy", "csv", "xls" ];
+
             $(document).ready(function(){
-                $('#myTable').DataTable({"language": {url: '//cdn.datatables.net/plug-ins/1.10.7/i18n/Spanish.json'}});
+                $('#myTable').DataTable({
+                    dom: 'T<"clear">lfrtip',
+                    tableTools: {
+                        "sSwfPath": "{{ asset('bundles/ccmcfdi/swf/copy_csv_xls_pdf.swf') }}"
+                    },
+                    "language": {url: '//cdn.datatables.net/plug-ins/1.10.7/i18n/Spanish.json'}
+                });
             });
         </script>
 

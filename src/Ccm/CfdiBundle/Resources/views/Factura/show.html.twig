@@ -8,7 +8,45 @@
         </div>
     {% endfor %}
 
-    <h1>Factura</h1>
+
+    <div class="page-header">
+        <h4>Factura</h4>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p class="lead"><strong>Folio</strong> {{ entity.folio }}</p>
+                    Fecha: {{ entity.fecha|date('d-m-Y') }}<br /><br />
+
+                    <address>
+                      <strong>{{ entity.emisorNombre }}</strong><br>
+                        {{ entity.emisorRfc }}<br>
+                        {{ entity.emisorCalle }} {{ entity.emisorNumExterior }}<br>
+                        {{ entity.emisorColonia }}, C.P. {{ entity.emisorCp }}<br>
+                        {{ entity.emisorMunicipio }}, {{ entity.emisorEstado }}<br>
+                    </address>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <dl class="dl-horizontal">
+                <dt>SubTotal:</dt><dd>${{ entity.subTotal|number_format(2, '.', ',') }}</dd>
+                <dt>{{ entity.impuesto }} {{ entity.tasa }}%:</dt><dd>${{ entity.importe|number_format(2, '.', ',') }}</dd>
+                <dt><span class="lead">Total:</span></dt><dd><span class="lead">${{ entity.total| number_format(2, '.', ',') }}</span></dd>
+
+            </dl>
+        </div>
+    </div>
+    Certificado: {{ entity.numeroCertificado }}<br />
+    UUID: {{ entity.uuid }}<br />
+
+{#
 
     <table class="record_properties">
         <tbody>
@@ -150,18 +188,22 @@
             </tr>
         </tbody>
     </table>
+#}
+    <br><br>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('') }}">
-            Back to the list
+        <a class="btn btn-default" href="{{ path('') }}" role="button">
+            Lista de facturas
         </a>
-    </li>
+
+{#
+
     <li>
         <a href="{{ path('_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>
     <li>{{ form(delete_form) }}</li>
-</ul>
+#}
+
+
 {% endblock %}

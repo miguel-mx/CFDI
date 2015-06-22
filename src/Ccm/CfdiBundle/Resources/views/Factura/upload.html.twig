@@ -2,6 +2,28 @@
 
 {% block body -%}
 
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <li class="list-group-item">
+                    <span class="label label-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span> {{ flashMessage }}
+                </li>
+            {% endfor %}
+            </ul>
+
+            <ul class="list-group">
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <li class="list-group-item">
+                        <span class="label label-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span> {{ flashMessage }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{#
+
     {% for flashMessage in app.session.flashbag.get('notice') %}
         <div class="alert alert-success" role="alert">
             {{ flashMessage }}
@@ -13,6 +35,7 @@
             {{ flashMessage }}
         </div>
     {% endfor %}
+#}
 
     {#  xml #}
 
@@ -20,7 +43,19 @@
         <h4>Carga de archivo XML</h4>
     </div>
 
-    {# Boorar etiqueta #}
-    {{ form(form) }}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_errors(form.archivos) }}
+        {{ form_widget(form.archivos) }}
+    </div>
+
+    <div class="page-header"></div>
+
+    {{ form_end(form) }}
+
+    {# form(form) #}
 
 {% endblock %}

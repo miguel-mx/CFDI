@@ -71,14 +71,14 @@ class FacturaController extends Controller
 
                     $this->addFlash(
                         'notice',
-                        $archivo->getClientOriginalName() . ' XML subido correctamente!'
+                        $archivo->getClientOriginalName()
                     );
 
                 } else {
 
                     $this->addFlash(
                         'error',
-                        $archivo->getClientOriginalName() . ' No es archivo XML!'
+                        $archivo->getClientOriginalName()
                     );
 
                     /* Archivo individual
