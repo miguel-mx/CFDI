@@ -105,7 +105,7 @@ class FacturaController extends Controller
     /**
      * Lists all Factura entities.
      *
-     * @Route("/", name="")
+     * @Route("/", name="_indexcfdi")
      * @Method("GET")
      * @Template()
      */

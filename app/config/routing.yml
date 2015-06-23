@@ -6,3 +6,7 @@ ccm_cfdi:
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+logout:
+    path:   /logout
+
