@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormView;
  * Factura controller.
  *
  * @Route("/cfdi")
+ *
  */
 class FacturaController extends Controller
 {
@@ -60,19 +61,31 @@ class FacturaController extends Controller
 
                     $content = file_get_contents($archivo->getPathname());
 
-                    $factura->loadXml($content);
                     $factura->setNombreArchivo($archivo->getClientOriginalName());
 
-                    //TODO: Valida que no exista la factura
-
                     $em = $this->getDoctrine()->getManager();
-                    $em->persist($factura);
-                    $em->flush();
 
-                    $this->addFlash(
-                        'notice',
-                        $archivo->getClientOriginalName()
-                    );
+                    //Valida que no exista la factura
+                    $results = $em->getRepository('CcmCfdiBundle:Factura')->findByFileName($factura->getNombreArchivo());
+
+                    if(!$results){
+
+                        $factura->loadXml($content);
+
+                        $em->persist($factura);
+                        $em->flush();
+
+                        $this->addFlash(
+                            'notice',
+                            $archivo->getClientOriginalName()
+                        );
+                    }
+                    else {
+                         $this->addFlash(
+                            'error',
+                            $archivo->getClientOriginalName() . ' La factura ya existe'
+                        );
+                    }
 
                 } else {
 
@@ -88,12 +101,9 @@ class FacturaController extends Controller
                     ); */
                 }
             }
-
             // Muestra la nueva factura Individual
             // return $this->redirect($this->generateUrl('_show', array('id' => $factura->getId())));
-
             // Vista de archivos cargados
-
         }
 
         return array(
@@ -105,15 +115,18 @@ class FacturaController extends Controller
     /**
      * Lists all Factura entities.
      *
-     * @Route("/", name="_indexcfdi")
+     * @Route("/list/{month}", defaults={"month" = 0}, requirements={"month": "\d+"}, name="_indexcfdi")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($month)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('CcmCfdiBundle:Factura')->findAll();
+        if($month == 0)
+            $entities = $em->getRepository('CcmCfdiBundle:Factura')->findAll();
+        else
+            $entities = $em->getRepository('CcmCfdiBundle:Factura')->findByMonth($month);
 
         return array(
             'entities' => $entities,
@@ -299,6 +312,7 @@ class FacturaController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $entity = $em->getRepository('CcmCfdiBundle:Factura')->find($id);
 
             if (!$entity) {
@@ -325,6 +339,20 @@ class FacturaController extends Controller
             ->setAction($this->generateUrl('_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm()
+            ;
+    }
+
+    /**
+     * Creates a form to select a Month
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createSelectMonth()
+    {
+        return $this->createFormBuilder()
+            ->add('month', 'select')
+            ->add('select', 'submit', array('label' => 'Buscar'))
             ->getForm()
             ;
     }

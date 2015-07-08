@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Date;
  * Factura
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Ccm\CfdiBundle\Entity\FacturaRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Factura
@@ -1106,11 +1106,26 @@ class Factura
         */
 
         // Impuestos
+        // Condiciona los Impuestos
 
-        $this->setTotalImpuestoTrasladado($xml->children('cfdi', true)->Impuestos->attributes()->totalImpuestosTrasladados);
-        $this->setImpuesto($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->impuesto);
-        $this->setTasa($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->tasa);
-        $this->setImporte($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->importe);
+
+        if($xml->children('cfdi', true)->Impuestos->Traslado->count()) {
+
+            $this->setTotalImpuestoTrasladado($xml->children('cfdi', true)->Impuestos->attributes()->totalImpuestosTrasladados);
+            $this->setImpuesto($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->impuesto);
+            $this->setTasa($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->tasa);
+            $this->setImporte($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->importe);
+
+        }
+        else {
+
+            $this->setTotalImpuestoTrasladado(0);
+            $this->setImpuesto(0);
+            $this->setTasa(0);
+            $this->setImporte(0);
+
+        }
+
 
         // Complementos
 

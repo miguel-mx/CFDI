@@ -20,7 +20,9 @@
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-        "ircmaxell/password-compat": "~1.0.3"
+        "ircmaxell/password-compat": "~1.0.3",
+        "stof/doctrine-extensions-bundle": "~1.1@dev",
+        "beberlei/DoctrineExtensions": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

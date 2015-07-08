@@ -191,19 +191,19 @@
 #}
     <br><br>
 
-        <a class="btn btn-default" href="{{ path('') }}" role="button">
+        <a class="btn btn-default" href="{{ path('_indexcfdi') }}" role="button">
             Lista de facturas
         </a>
 
 {#
-
     <li>
         <a href="{{ path('_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
 #}
-
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ form(delete_form) }}
+    {% endif %}
 
 {% endblock %}
