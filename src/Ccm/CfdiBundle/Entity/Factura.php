@@ -1109,7 +1109,7 @@ class Factura
         // Condiciona los Impuestos
 
 
-        if($xml->children('cfdi', true)->Impuestos->Traslado->count()) {
+        if(count($xml->children('cfdi', true)->Impuestos->attributes())) {
 
             $this->setTotalImpuestoTrasladado($xml->children('cfdi', true)->Impuestos->attributes()->totalImpuestosTrasladados);
             $this->setImpuesto($xml->children('cfdi', true)->Impuestos->Traslados->Traslado->attributes()->impuesto);
